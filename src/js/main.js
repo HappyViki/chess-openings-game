@@ -9,7 +9,6 @@ renderApp(game.board.configuration);
 
 document.addEventListener("click", async (e) => {    
     if ([...e.target.classList].includes("move")) {
-        document.querySelectorAll(".move").forEach( move => move.classList.remove("move") );
         game.move(currentSquareId, e.target.id);
         game.aiMove();
         playerColor = game.board.getPlayingColor();
@@ -23,6 +22,7 @@ document.addEventListener("click", async (e) => {
         let moves = game.moves(id);
         currentSquareId = id;
 
+        document.querySelectorAll(".move").forEach( move => move.classList.remove("move") );
         moves.forEach( move => document.querySelector( `#${move}`).classList.add("move") );
     }    
 })
