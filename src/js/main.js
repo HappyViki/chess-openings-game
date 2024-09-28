@@ -1,4 +1,4 @@
-import { Game } from './js-chess-engine/dist/js-chess-engine.js';
+import { Game } from './js-chess-engine';
 import { renderApp, currentPlayerPiece } from './utils.js';
 
 const game = new Game();
