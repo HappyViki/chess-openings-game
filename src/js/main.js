@@ -3,6 +3,7 @@ import { renderApp, currentPlayerPiece } from './utils.js';
 
 const game = new Game();
 let currentSquareId;
+let playerColor = game.board.getPlayingColor();
 
 renderApp(game.board.configuration);
 
@@ -11,15 +12,12 @@ document.addEventListener("click", async (e) => {
         document.querySelectorAll(".move").forEach( move => move.classList.remove("move") );
         game.move(currentSquareId, e.target.id);
         game.aiMove();
+        playerColor = game.board.getPlayingColor();
         await renderApp(game.exportJson());
     }
 
-    if ([...e.target.classList].includes("piece") && !currentPlayerPiece(e.target.id)) {        
+    if ([...e.target.classList].includes("piece")) {     
         e.target.parentElement.click();
-    }
-
-    if ([...e.target.classList].includes("piece") && currentPlayerPiece(e.target.id)) {        
-        document.querySelectorAll(".move").forEach( move => move.classList.remove("move") );
 
         let id = e.target.parentElement.id;        
         let moves = game.moves(id);
