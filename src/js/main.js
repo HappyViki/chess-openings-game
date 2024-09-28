@@ -1,11 +1,10 @@
-import { NEW_GAME_BOARD_CONFIG } from "js-chess-engine/lib/const/board.mjs";
-import { Game } from 'js-chess-engine/lib/js-chess-engine.mjs';
+import { Game } from 'js-chess-engine';
 import { renderApp, currentPlayerPiece } from './utils.js';
 
 const game = new Game();
 let currentSquareId;
 
-renderApp(NEW_GAME_BOARD_CONFIG);
+renderApp(game.board.configuration);
 
 document.addEventListener("click", async (e) => {    
     if ([...e.target.classList].includes("move")) {
