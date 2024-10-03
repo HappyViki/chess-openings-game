@@ -2103,7 +2103,7 @@ var Engine = function(boardSize, lightSquare, darkSquare, selectColor) {
                 '<img style="width: ' + 
                  (boardSize ? boardSize / 8: 400 / 8) + 
                 'px" draggable="true" src ="Images/' + 
-                (board[square]) +'.gif">';
+                (board[square]) +'.gif">' + coordinates[square];
           }
         }
       }

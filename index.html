@@ -6,6 +6,7 @@
     <meta content="utf-8" http-equiv="encoding">
     
     <!-- SEO -->
+    <title>Chess Openings Game</title>
     <meta name="description" content="javascript UCI chess engine - Wukong JS by Code Monkey King">
     <meta name="keywords" content="UCI chess engine in javascript that runs in both browser and Arena GUI - Wukong JS by Code Monkey King">
     
@@ -17,21 +18,21 @@
   </head>
   <body style="font-family:
                monospace; font-size: 16px;
-               background: url(logo/wallpaper_wukong.jpg); background-repeat: no-repeat;
-               background-attachment: fixed;
-               background-position: center;
-               background-size: cover;
                display: flex;
                justify-content: center;
                align-items: center;
-               height: 100vh;
                "
         
         class="img-fluid bg-cover text-center">
 
     <div id="main">
+      <h1 class="my-3">Chess Openings Game</h1>
+      <div class="mb-3 mx-auto" style="width: 417px;"><a href="https://www.veronicodes.com/">Veronica</a> is modifying <a href="https://github.com/maksimKorzh/wukongJS/">wukongJS</a> to create a game for chess openings.</div>
+
       <!-- Chess board view -->
       <div id="chessboard"></div>
+
+      <div id="scoreboard" class="my-3">Best Move Score: 0</div>
       
       <div class="input-group mx-auto mt-1" style="width: 417px;">
         <!-- Download PGN -->
@@ -54,7 +55,7 @@
       </div>
 
       <!-- PGN -->
-      <textarea id="pgn" rows="3" name="text" class="form-control" style="width: 420px;"></textarea>
+      <textarea id="pgn" rows="3" name="text" class="form-control mx-auto" style="width: 420px;"></textarea>
       
       <div class="btn-group mt-1 mb-1" style="width: 420px;">
         <!-- Bots -->

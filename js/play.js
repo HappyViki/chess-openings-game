@@ -11,9 +11,6 @@ var engine = new Engine();
 var book = [];
 var botName = ''
 
-// update version in GUI
-document.title = 'WukongJS v ' + engine.VERSION;
-
 // run in browser mode  
 console.log('\n  Wukong JS - BROWSER MODE - v' + engine.VERSION);
 console.log('  type "engine" for public API reference');
@@ -32,6 +29,7 @@ var userTime = 0;
 var gameResult = '*';
 var guiFen = '';
 var promotedPiece = 5;
+var bestMoveScore = 0;
 
 // difficulty
 var fixedTime = 0;
@@ -61,6 +59,11 @@ function dropPiece(event, square) {
   userTarget = square;
   promotedPiece = (engine.getSide() ? (promotedPiece + 6): promotedPiece)
   let valid = validateMove(userSource, userTarget, promotedPiece);  
+
+  if (valid) {
+    evaluateMove(userSource, userTarget);
+  }
+
   engine.movePiece(userSource, userTarget, promotedPiece);
   if (engine.getPiece(userTarget) == 0) valid = 0;
   clickLock = 0;
@@ -94,6 +97,11 @@ function tapPiece(square) {
 
     promotedPiece = (engine.getSide() ? (promotedPiece + 6): promotedPiece)
     let valid = validateMove(userSource, userTarget, promotedPiece);
+
+    if (valid) {
+      evaluateMove(userSource, userTarget);
+    }
+
     engine.movePiece(userSource, userTarget, promotedPiece);
     if (engine.getPiece(userTarget) == 0) valid = 0;
     clickLock = 0;
@@ -192,6 +200,33 @@ function getBookMove() {
   }
 
   return 0;
+}
+
+function evaluateMove(source, target) {
+
+  if (engine.inCheck(guiSide)) return;
+  
+  engine.resetTimeControl();
+
+  let timing = engine.getTimeControl();
+  let startTime = new Date().getTime();
+  
+  if (fixedTime) {
+    fixedDepth = 64;
+    timing.timeSet = 1;
+    timing.time = fixedTime * 1000;
+    timing.stopTime = startTime + timing.time
+    engine.setTimeControl(timing);
+  }
+  
+  let bestMove = engine.search(fixedDepth);
+  let bestMoveString = engine.moveToString(bestMove);
+  let moveString = engine.squareToString(source) + engine.squareToString(target);
+  
+  if (bestMoveString === moveString) {
+    bestMoveScore += 1;
+    document.getElementById("scoreboard").innerText = `Best Move Score: ${bestMoveScore}`;
+  }
 }
 
 // engine move
