@@ -202,9 +202,7 @@ function getBookMove() {
   return 0;
 }
 
-function evaluateMove(source, target) {
-
-  if (engine.inCheck(guiSide)) return;
+function getGoodMoves() {
   
   engine.resetTimeControl();
 
@@ -219,14 +217,25 @@ function evaluateMove(source, target) {
     engine.setTimeControl(timing);
   }
   
-  let bestMove = engine.search(fixedDepth);
-  let bestMoveString = engine.moveToString(bestMove);
+  let goodMoves = engine.generateGoodMoves(fixedDepth);
+  
+  return goodMoves;
+}
+
+function evaluateMove(source, target) {
+  let goodMoves = getGoodMoves();
+  let bestMoveString = engine.moveToString(goodMoves.bestMove);
   let moveString = engine.squareToString(source) + engine.squareToString(target);
+
+  if (goodMoves.goodMoveStrings.includes(moveString)) {    
+    bestMoveScore += 0.5;
+  }
   
   if (bestMoveString === moveString) {
     bestMoveScore += 1;
-    document.getElementById("scoreboard").innerText = `Best Move Score: ${bestMoveScore}`;
   }
+
+  document.getElementById("scoreboard").innerText = `Best Move Score: ${bestMoveScore}`;
 }
 
 // engine move
@@ -297,6 +306,8 @@ function think() {
       updatePgn();
       userTime = Date.now();
     }
+
+    getGoodMoves();
   
   }, delayMove + (guiTime < 100 && delayMove == 0) ? 1000 : ((guiDepth == 0) ? 500 : 100));
 }

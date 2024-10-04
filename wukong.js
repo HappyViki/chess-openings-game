@@ -1687,12 +1687,18 @@ var Engine = function(boardSize, lightSquare, darkSquare, selectColor) {
   
       return alpha;
     }
-    
+
     // search position for the best move
     function searchPosition(depth) {
+      return generateGoodMoves(depth).bestMove;
+    }
+    
+    // search position for the best move
+    function generateGoodMoves(depth) {
       let start = Date.now();
       let score = 0;
       let lastBestMove = 0;
+      let goodMoveStrings = [];
       
       clearSearch();
   
@@ -1745,6 +1751,7 @@ var Engine = function(boardSize, lightSquare, darkSquare, selectColor) {
           info += moveToString(pvTable[count]) + ' ';
                   
         console.log(info);
+        goodMoveStrings.unshift(moveToString(pvTable[0]));
         
         if (typeof(document) != 'undefined') {
           if (uciScore == 49000) uciScore = 'M1';
@@ -1759,7 +1766,8 @@ var Engine = function(boardSize, lightSquare, darkSquare, selectColor) {
   
       let bestMove = (timing.stopped == 1) ? lastBestMove: pvTable[0];
       console.log('bestmove ' + moveToString(bestMove));
-      return bestMove;
+      console.log('goodmoves ' + goodMoveStrings.join(' '));
+      return { bestMove, goodMoveStrings };
     }
   
   
@@ -2254,6 +2262,7 @@ var Engine = function(boardSize, lightSquare, darkSquare, selectColor) {
       getMovePromoted: function(move) { return getMovePromoted(move); },
       getMoveCapture: function(move) { return getMoveCapture(move); },
       getMoveCastling: function(move) { return getMoveCastling(move); },
+      generateGoodMoves: function(depth) { return generateGoodMoves(depth); },
       generateLegalMoves: function() { return generateLegalMoves(); },
       printMoveList: function(moveList) { printMoveList(moveList); },
       
