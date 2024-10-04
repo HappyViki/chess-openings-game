@@ -20,6 +20,7 @@ var moveSound = new Audio('Sounds/move.wav');
 var captureSound = new Audio('Sounds/capture.wav');
 
 // stats
+var bestMoveScore = 0;
 var guiScore = 0;
 var guiDepth = 0;
 var guiTime = 0;
@@ -29,7 +30,6 @@ var userTime = 0;
 var gameResult = '*';
 var guiFen = '';
 var promotedPiece = 5;
-var bestMoveScore = 0;
 
 // difficulty
 var fixedTime = 0;
@@ -58,12 +58,7 @@ function dragOver(event, square) {
 function dropPiece(event, square) {
   userTarget = square;
   promotedPiece = (engine.getSide() ? (promotedPiece + 6): promotedPiece)
-  let valid = validateMove(userSource, userTarget, promotedPiece);  
-
-  if (valid) {
-    evaluateMove(userSource, userTarget);
-  }
-
+  let valid = validateMove(userSource, userTarget, promotedPiece);
   engine.movePiece(userSource, userTarget, promotedPiece);
   if (engine.getPiece(userTarget) == 0) valid = 0;
   clickLock = 0;
@@ -97,11 +92,6 @@ function tapPiece(square) {
 
     promotedPiece = (engine.getSide() ? (promotedPiece + 6): promotedPiece)
     let valid = validateMove(userSource, userTarget, promotedPiece);
-
-    if (valid) {
-      evaluateMove(userSource, userTarget);
-    }
-
     engine.movePiece(userSource, userTarget, promotedPiece);
     if (engine.getPiece(userTarget) == 0) valid = 0;
     clickLock = 0;
@@ -123,6 +113,7 @@ function validateMove(userSource, userTarget, promotedPiece) {
                    engine.promotedToString(promotedPiece);
 
   let move = engine.moveFromString(moveString);
+  evaluateMove(userSource, userTarget);
   return move;
 }
 
